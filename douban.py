@@ -8,7 +8,7 @@ from selenium import webdriver
 connection = pymysql.connect(host='localhost',
                              port=3306,
                              user='root',
-                             passwd='zkyr1006',
+                             passwd='qwe123456',
                              db='python',
                              charset='utf8')
 
@@ -16,6 +16,7 @@ cursor=connection.cursor
 sql = "USE python;"
 cursor.execute(sql)
 connection.commit()
+
 
 # def cookie_get():
 #     #保存cookie到文件
