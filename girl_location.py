@@ -13,10 +13,8 @@
 @description：高德坐标拾取网站：https://lbs.amap.com/console/show/picker
 """
 
-import os
 import exifread
-from decimal import Decimal
-from position_utils import *
+from test.position_utils import *
 import requests
 import json
 import datetime
