@@ -38,7 +38,7 @@ if __name__ == '__main__':
         # redis.lpush("user",1,2,2,343)
 
         # redis.
-        redis.rpush('user','23',32)
+        redis.rpush('user','23',34343434)
 
         # conn = conn_thread.connection()
         # cursor = conn.cursor()

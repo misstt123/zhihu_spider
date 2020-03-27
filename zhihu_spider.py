@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from login.login import Login as Login
+import login.login  as Login
 import requests
 import http.cookiejar as cookielib
 import configparser
@@ -22,7 +22,7 @@ class GetUser(threading.Thread):
     session = None
     config = None
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
         "Host": "www.zhihu.com",
         "Referer": "https://www.zhihu.com/",
