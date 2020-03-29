@@ -13,6 +13,7 @@ import traceback
 import threading
 import time
 import random
+from fake_useragent import UserAgent
 
 # 获取配置
 cfg = configparser.ConfigParser()
@@ -288,6 +289,7 @@ class GetUser(threading.Thread):
             # 出现异常重试
             print("失败name_url：" + str(name_url) + "获取页面失败，放弃该用户")
             print(err)
+            traceback
             traceback.print_exc()
             return None
         finally:
@@ -406,14 +408,16 @@ if __name__ == '__main__':
     # master代码不再需要登陆
     # login = GetUser(999, "登陆线程")
 
-    threads = []
-    threads_num = int(cfg.get("sys", "thread_num"))
-    for i in range(0, threads_num):
-        m = GetUser(i, "thread" + str(i))
-        threads.append(m)
+    ua = UserAgent()
 
-    for i in range(0, threads_num):
-        threads[i].start()
-
-    for i in range(0, threads_num):
-        threads[i].join()
+    # threads = []
+    # threads_num = int(cfg.get("sys", "thread_num"))
+    # for i in range(0, threads_num):
+    #     m = GetUser(i, "thread" + str(i))
+    #     threads.append(m)
+    #
+    # for i in range(0, threads_num):
+    #     threads[i].start()
+    #
+    # for i in range(0, threads_num):
+    #     threads[i].join()
