@@ -17,6 +17,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
+import pandas as pd
 from fake_useragent import *
 
 # 获取配置
@@ -24,6 +25,26 @@ from fake_useragent.fake import UserAgent
 
 cfg = configparser.ConfigParser()
 cfg.read("config.ini")
+
+def toCSV(data, flags):
+    '''
+    将抓取到的数据转换成CSV文件
+    :param data:数据
+    :param flags:标志位 0：元组，1：字典
+    :return:
+    '''
+    # write_clo = ['第一列', '第二列', '第三列', '第四列']
+    if flags == 1:
+        write_clo = data.values()
+    else:
+        write_clo = data
+    try:
+        df = pd.DataFrame(columns=(write_clo))
+        df.to_csv("bilibili.csv", line_terminator="\n", index=False, mode='a', encoding='utf8')
+    except Exception as e:
+        notice_wechat("csv导入异常", "时间: " + current_time() + ", av号： " + data['视频id'], ", 异常信息： " + str(e))
+        print(e)
+
 
 def sendMail(title, att_name):
     '''
