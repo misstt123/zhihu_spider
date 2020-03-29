@@ -15,8 +15,8 @@ try:  # Python 2 # pragma: no cover
     from urllib2 import urlopen, Request, URLError
     from urllib import quote_plus
 
-    str_types = (unicode, str)  # noqa
-    text = unicode  # noqa
+    # str_types = (unicode, str)  # noqa
+    # text = unicode  # noqa
 except ImportError:  # Python 3 # pragma: no cover
     from urllib.request import urlopen, Request
     from urllib.parse import quote_plus

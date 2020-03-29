@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import login.login  as Login
+# import login.login  as Login
 import requests
 import http.cookiejar as cookielib
 import configparser
@@ -13,11 +13,78 @@ import traceback
 import threading
 import time
 import random
-from fake_useragent import UserAgent
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.header import Header
+from fake_useragent import *
 
 # 获取配置
+from fake_useragent.fake import UserAgent
+
 cfg = configparser.ConfigParser()
 cfg.read("config.ini")
+
+def sendMail(title, att_name):
+    '''
+    :param title: 邮件标题
+    :param att_name: 附件名，生成的csv附件名
+    :return:
+    '''
+    sender = 'goddong12580@163.com'
+    pwd = 'DVCDOGAJMNFJMRAC'
+    receivers = '923219711@qq.com'  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
+
+    # 创建一个带附件的实例
+    try:
+        message = MIMEMultipart()
+        message['From'] = Header("傻有钱企业", 'utf-8')
+        message['To'] = receivers
+        subject = title
+        message['Subject'] = Header(subject, 'utf-8')
+
+        # 邮件正文内容
+        message.attach(MIMEText('爬虫抓取完成数据抓取完成请下载附件', 'plain', 'utf-8'))
+
+        # 构造附件1，传送当前目录下的 test.txt 文件
+        att1 = MIMEText(open(att_name, 'rb').read(), 'base64', 'utf-8')
+        att1["Content-Type"] = 'application/octet-stream'
+        # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
+        att1["Content-Disposition"] = 'attachment; filename="{}"'.format(att_name)
+        message.attach(att1)
+    except Exception as e:
+        print(e)
+
+    # 构造附件2，传送当前目录下的 runoob.txt 文件
+    # att2 = MIMEText(open('runoob.txt', 'rb').read(), 'base64', 'utf-8')
+    # att2["Content-Type"] = 'application/octet-stream'
+    # att2["Content-Disposition"] = 'attachment; filename="runoob.txt"'
+    # message.attach(att2)
+
+    try:
+        smtpObj = smtplib.SMTP_SSL('smtp.163.com', 465)
+        smtpObj.login(sender, pwd)
+        smtpObj.sendmail(sender, receivers, message.as_string())
+        print
+        "邮件发送成功"
+    except smtplib.SMTPException:
+        print
+        "Error: 无法发送邮件"
+
+
+def notice_wechat(title, content):
+    '''
+    server酱通知
+    :param title: 标题
+    :param content: 内容
+    '''
+    '''server酱通知微信'''
+    api = "https://sc.ftqq.com/SCU34444T94b6628ac7cdafb625a54ed4d75976545e6f70180d158.send"
+    data = {
+        'text': title,
+        'desp': content
+    }
+    req = requests.post(api, data)
 
 class GetUser(threading.Thread):
     session = None
@@ -325,10 +392,14 @@ class GetUser(threading.Thread):
             # browse_num = int(BS.find_all("span", class_="zg-gray-normal")[6].find("strong").get_text())
             browse_num = 0  # 知乎个人首页改版，这里暂时没有数据可以抓了
             trade = user_info['business']['name'] if 'business' in user_info else ''
-            company = user_info['employments'][0]['company']['name'] if len(user_info['employments']) > 0 and 'company' in user_info['employments'][0]  else ''
-            school = user_info['educations'][0]['school']['name'] if len(user_info['educations']) > 0 and 'school' in user_info['educations'][0]  else ''
-            major = user_info['educations'][0]['major']['name'] if len(user_info['educations']) > 0 and 'major' in user_info['educations'][0] else ''
-            job = user_info['employments'][0]['job']['name'] if len(user_info['employments']) > 0 and 'job' in user_info['employments'][0] else ''
+            company = user_info['employments'][0]['company']['name'] if len(
+                user_info['employments']) > 0 and 'company' in user_info['employments'][0] else ''
+            school = user_info['educations'][0]['school']['name'] if len(user_info['educations']) > 0 and 'school' in \
+                                                                     user_info['educations'][0] else ''
+            major = user_info['educations'][0]['major']['name'] if len(user_info['educations']) > 0 and 'major' in \
+                                                                   user_info['educations'][0] else ''
+            job = user_info['employments'][0]['job']['name'] if len(user_info['employments']) > 0 and 'job' in \
+                                                                user_info['employments'][0] else ''
             location = user_info['locations'][0]['name'] if len(user_info['locations']) > 0 else ''
             description = user_info['description'] if 'description' in user_info else ''
             ask_num = int(user_info['question_count'])
@@ -404,12 +475,15 @@ class GetUser(threading.Thread):
         print(self.name + " is running")
         self.entrance()
 
+
 if __name__ == '__main__':
     # master代码不再需要登陆
     # login = GetUser(999, "登陆线程")
 
     ua = UserAgent()
-
+    for i in range(20):
+        data = ua.random
+        print(data)
     # threads = []
     # threads_num = int(cfg.get("sys", "thread_num"))
     # for i in range(0, threads_num):
