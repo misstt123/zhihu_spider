@@ -58,11 +58,15 @@ class Login:
             print('获取知乎页面失败，请检查网络连接')
             sys.exit()
         html = index_page.text
+        cookie_text=index_page.cookies.get_dict()
+        print(cookie_text)
+        return
+
         # 这里的_xsrf 返回的是一个list
         BS = BeautifulSoup(html, 'html.parser')
-        xsrf_input = BS.find(attrs={'name': '_xsrf'})
+        xsrf_input = BS.find({'name': '_xsrf'})
         pattern = r'value=\"(.*?)\"'
-
+        # print(xsrf_input)
         self.__xsrf = re.findall(pattern, str(xsrf_input))[0]
         print("获取到xsrf:" + str(self.__xsrf))
 
@@ -81,13 +85,13 @@ class Login:
             f.close()
             # 用pillow 的 Image 显示验证码
             # 如果没有安装 pillow 到源代码所在的目录去找到验证码然后手动输入
-        '''try:
+        try:
             im = Image.open('captcha.jpg')
             im.show()
             im.close()
-        except:'''
-        print(u'请到 %s 目录找到captcha.jpg 手动输入' % os.path.abspath('captcha.jpg'))
-        captcha = input("请输入验证码\n>")
+        except:
+            print(u'请到 %s 目录找到captcha.jpg 手动输入' % os.path.abspath('captcha.jpg'))
+            captcha = input("请输入验证码\n>")
         return captcha
 
     # 验证是否登陆
@@ -128,7 +132,7 @@ class Login:
 
         if re.match(r"^1\d{10}$", self.username):
             print("手机登陆\n")
-            post_url = 'https://www.zhihu.com/login/phone_num'
+            post_url = 'https://www.zhihu.com/signin?next=%2Ffollow'
             postdata = {
                 '_xsrf': self.get_xsrf(),
                 'password': self.password,

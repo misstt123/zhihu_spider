@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# import login.login  as Login
+from login.login import Login
 import requests
 import http.cookiejar as cookielib
 import configparser
@@ -26,6 +26,14 @@ from fake_useragent.fake import UserAgent
 cfg = configparser.ConfigParser()
 cfg.read("config.ini")
 
+def current_time():
+    '''
+    返回当前时间
+    :return:
+    '''
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+
 def toCSV(data, flags):
     '''
     将抓取到的数据转换成CSV文件
@@ -40,7 +48,7 @@ def toCSV(data, flags):
         write_clo = data
     try:
         df = pd.DataFrame(columns=(write_clo))
-        df.to_csv("bilibili.csv", line_terminator="\n", index=False, mode='a', encoding='utf8')
+        df.to_csv("zhihu.csv", line_terminator="\n", index=False, mode='a', encoding='utf8')
     except Exception as e:
         notice_wechat("csv导入异常", "时间: " + current_time() + ", av号： " + data['视频id'], ", 异常信息： " + str(e))
         print(e)
@@ -170,10 +178,10 @@ class GetUser(threading.Thread):
             pass
 
         # 创建login对象
-        '''
+
         lo = Login(self.session)
         lo.do_login()
-        '''
+
 
         # 初始化redis连接
         try:
@@ -482,7 +490,7 @@ class GetUser(threading.Thread):
             if int(self.redis_con.llen("user_queue")) <= 5:
                 self.get_index_page_user()
             else:
-                # 出队列获取用户name_url redis取出的是byte，要decode成utf-8
+                # 出队列获取用户name_url redis取出的是byte，要decode成utf-8三十八分检查不啊报价给清华点慌UFGAUIGBCYGIF给vVBY
                 name_url = str(self.redis_con.rpop("user_queue").decode('utf-8'))
                 print("正在处理name_url：" + name_url)
                 self.get_user_info(name_url)
@@ -499,7 +507,7 @@ class GetUser(threading.Thread):
 
 if __name__ == '__main__':
     # master代码不再需要登陆
-    # login = GetUser(999, "登陆线程")
+    login = GetUser(999, "登陆线程")
 
     ua = UserAgent()
     for i in range(20):
