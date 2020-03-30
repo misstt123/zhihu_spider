@@ -53,13 +53,17 @@ class Login:
         index_url = 'http://www.zhihu.com/explore'
         # 获取登录时需要用到的_xsrf
         try:
-            index_page = self.__session.get(index_url, headers=self.headers, timeout=35)
+            index_page = self.__session.post(index_url, headers=self.headers, timeout=35)
         except:
             print('获取知乎页面失败，请检查网络连接')
             sys.exit()
+
+
         html = index_page.text
-        cookie_text=index_page.cookies.get_dict()
+        cookie_text=requests.session().cookies
         print(cookie_text)
+
+
         return
 
         # 这里的_xsrf 返回的是一个list
