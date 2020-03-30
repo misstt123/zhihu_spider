@@ -13,16 +13,16 @@ import traceback
 
 class Login:
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
         "Host": "www.zhihu.com",
         "Referer": "https://www.zhihu.com/",
         "Origin": "https://www.zhihu.com/",
         "Upgrade-Insecure-Requests": "1",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        "Pragma": "no-cache",
-        "Accept-Encoding": "gzip, deflate",
-        'Connection': 'close'
+        "Accept-Encoding": "gzip, deflate, br",
+        'Connection': 'keep-alive',
+        'TE':'Trailers'
     }
     __xsrf = ''
     __session = ''
@@ -60,11 +60,11 @@ class Login:
 
 
         html = index_page.text
-        cookie_text=requests.session().cookies
-        print(cookie_text)
+        # cookie_text=requests.session().cookies
+        # print(cookie_text)
+        self.__session.cookies.save()
 
-
-        return
+        # return
 
         # 这里的_xsrf 返回的是一个list
         BS = BeautifulSoup(html, 'html.parser')
