@@ -509,6 +509,9 @@ if __name__ == '__main__':
     # master代码不再需要登陆
     login = GetUser(999, "登陆线程")
 
+    # cookies_dict = requests.utils.dict_from_cookiejar(s.cookies)
+    # # 把cookies转化成字典。
+    # print("cookie:" + str(cookies_dict))
     ua = UserAgent()
     for i in range(20):
         data = ua.random
