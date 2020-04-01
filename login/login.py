@@ -98,7 +98,7 @@ class Login:
         # self.headers['X-Xsrftoken'] = self.__xsrf
         # self.__session.cookies.save()  # 获取完之后保存一下cookie
 
-        return self.__xsrf
+        # return self.__xsrf
 
     # 获取验证码
     def get_captcha(self):
