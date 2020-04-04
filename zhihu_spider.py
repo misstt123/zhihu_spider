@@ -25,8 +25,10 @@ from fake_useragent.fake import UserAgent
 
 cfg = configparser.ConfigParser()
 cfg.read("config.ini")
+ua = UserAgent()
 
 def current_time():
+
     '''
     返回当前时间
     :return:
@@ -483,6 +485,8 @@ class GetUser(threading.Thread):
         length = len(self.ua)
         rand = random.randint(0, length - 1)
         self.headers['User-Agent'] = self.ua[rand]
+    def random_ua(self):
+        self.headers['User-Agent']=ua.random
 
     # 开始抓取用户，程序总入口
     def entrance(self):
@@ -512,10 +516,10 @@ if __name__ == '__main__':
     # cookies_dict = requests.utils.dict_from_cookiejar(s.cookies)
     # # 把cookies转化成字典。
     # print("cookie:" + str(cookies_dict))
-    ua = UserAgent()
-    for i in range(20):
-        data = ua.random
-        print(data)
+
+    # for i in range(20):
+    #     data = ua.random
+    #     print(data)
     # threads = []
     # threads_num = int(cfg.get("sys", "thread_num"))
     # for i in range(0, threads_num):
